@@ -1,0 +1,8 @@
+{
+  "ext": "js html",
+  "execMap": {
+    "js": "node --inspect=6666"
+  },
+  "legacyWatch": true,
+  "ignore": ["node_modules/**"]
+}

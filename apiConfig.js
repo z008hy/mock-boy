@@ -1,0 +1,3 @@
+module.exports = {
+  getUser: '/user/'
+}
