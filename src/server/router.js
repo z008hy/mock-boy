@@ -23,7 +23,7 @@ const router = new Router()
 // }
 
 const registerApi = (router) => {
-  const apiPath = path.resolve(__dirname, '../apis')
+  const apiPath = path.resolve(__dirname, '../../apis')
   const apiFiles = fs.readdirSync(apiPath)
   if (Array.isArray(apiFiles)){ 
     apiFiles.forEach(name => {
