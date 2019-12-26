@@ -6,6 +6,7 @@ const cors = require('koa2-cors')
 const nunjucks = require('koa-nunjucks-2')
 const Mock = require('mockjs')
 const mocks = require('./mock')
+const logger = require('./middleware/logger')
 
 const router = new Router()
 
@@ -26,11 +27,13 @@ const registerApi = (router) => {
   const apiFiles = fs.readdirSync(apiPath)
   if (Array.isArray(apiFiles)){ 
     apiFiles.forEach(name => {
-      const { url, method, data } = require(path.resolve(apiPath, name))
+      let api = require(path.resolve(apiPath, name))
+      if (typeof api === 'function') api = api(Mock)
+      const { url, method, data } = api
       if (!url || !data) return console.log(`${name} error! `)
       router[method](url, async (ctx) => {
         if (typeof data === 'function') {
-          return ctx.body = data(ctx.request)
+          return ctx.body = Mock.mock(data(ctx.request))
         }
         return ctx.body = Mock.mock(data)
       })
@@ -47,6 +50,7 @@ router['get']('/index/', async (ctx) => {
 module.exports = app => {
   app.use(cors())
   app.use(koaBody())
+  app.use(logger())
   app.use(router.routes())
   app.use(router.allowedMethods())
   app.use(nunjucks({

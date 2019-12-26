@@ -1,5 +1,5 @@
 module.exports = {
-  url: '/get_user',
+  url: '/json_example',
   method: 'get',
   data: {
     data: [

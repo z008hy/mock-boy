@@ -14,8 +14,10 @@
     "koa-nunjucks-2": "^3.0.2",
     "koa-router": "^7.4.0",
     "koa2-cors": "^2.0.6",
+    "log4js": "^6.1.0",
     "mockjs": "^1.0.1-beta3",
     "nodemon": "^1.18.11",
-    "nunjucks": "^3.2.0"
+    "nunjucks": "^3.2.0",
+    "pretty-format": "^24.9.0"
   }
 }
