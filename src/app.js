@@ -1,9 +1,9 @@
 const Koa = require('koa')
 const router = require('./server/router')
-const { port } = require('../config')
+const config = require('../.config')
 
 const app = new Koa()
 
 router(app)
 
-app.listen(port)
+app.listen(config.get('port'))

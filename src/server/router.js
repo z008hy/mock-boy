@@ -1,42 +1,34 @@
 const fs = require('fs')
 const path = require('path')
 const Router = require('koa-router')
-const koaBody = require('koa-body/index')
+const koaBody = require('koa-body')
 const cors = require('koa2-cors')
 const nunjucks = require('koa-nunjucks-2')
 const Mock = require('mockjs')
-const mocks = require('./mock')
 const logger = require('./middleware/logger')
+const { getApiPath } = require('../../.config')
 
 const router = new Router()
 
-// const mockRoutes = mocks()
-// if (Array.isArray(mockRoutes)) {
-//   mockRoutes.forEach((item) => {
-//     router[item.method](item.url, async (ctx) => {
-//       if (typeof item.data === 'function') {
-//         return ctx.body = item.data(ctx.request)
-//       }
-//       return ctx.body = Mock.mock(item.data)
-//     })
-//   })
-// }
-
 const registerApi = (router) => {
-  const apiPath = path.resolve(__dirname, '../../apis')
+  const apiPath = getApiPath()
   const apiFiles = fs.readdirSync(apiPath)
   if (Array.isArray(apiFiles)){ 
     apiFiles.forEach(name => {
-      let api = require(path.resolve(apiPath, name))
-      if (typeof api === 'function') api = api(Mock)
-      const { url, method, data } = api
-      if (!url || !data) return console.log(`${name} error! `)
-      router[method](url, async (ctx) => {
-        if (typeof data === 'function') {
-          return ctx.body = Mock.mock(data(ctx.request))
-        }
-        return ctx.body = Mock.mock(data)
-      })
+      try {
+        let api = require(path.resolve(apiPath, name))
+        if (typeof api === 'function') api = api(Mock)
+        const { url, method, data } = api
+        if (!url || !data) return console.log(`API file error [${apiPath}/${name}]!`)
+        router[method](url, async (ctx) => {
+          if (typeof data === 'function') {
+            return ctx.body = Mock.mock(data(ctx.request))
+          }
+          return ctx.body = Mock.mock(data)
+        })
+      } catch (err) {
+        console.log(`API file error [${apiPath}/${name}]!`, err)
+      }
     });
   }
 }
@@ -49,7 +41,7 @@ router['get']('/index/', async (ctx) => {
 
 module.exports = app => {
   app.use(cors())
-  app.use(koaBody())
+  app.use(koaBody({multipart: true}))
   app.use(logger())
   app.use(router.routes())
   app.use(router.allowedMethods())

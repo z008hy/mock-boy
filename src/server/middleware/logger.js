@@ -1,6 +1,7 @@
 const path = require('path')
 const log4js = require('log4js')
 const fmt = require('pretty-format')
+const { getLogPath } = require('../../../.config')
 
 log4js.configure({
   appenders: {
@@ -10,11 +11,18 @@ log4js.configure({
       alwaysIncludePattern: true,
       pattern: 'yyyy-MM-dd.log',
       encoding: 'utf-8'
+    },
+    user: {
+      type: 'dateFile',
+      filename: getLogPath(),
+      alwaysIncludePattern: true,
+      pattern: 'yyyy-MM-dd.log',
+      encoding: 'utf-8'
     }
   },
   categories: {
     default: {
-      appenders: ['app'],
+      appenders: ['app', 'user'],
       level: 'info'
     }
   }
@@ -27,5 +35,7 @@ module.exports = () => async (ctx, next) =>  {
   const ms = new Date() - startTime
   ctx.state.logger.info('*********************************************************************')
   ctx.state.logger.info('Request', fmt(ctx.request))
+  ctx.state.logger.info('Request Body', fmt(ctx.request.body))
   ctx.state.logger.info('Response', fmt(ctx.response))
+  ctx.state.logger.info('Response Body', fmt(ctx.body))
 }

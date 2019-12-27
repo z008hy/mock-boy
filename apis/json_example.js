@@ -1,6 +1,6 @@
 module.exports = {
   url: '/json_example',
-  method: 'get',
+  method: 'post',
   data: {
     data: [
       {
@@ -12,7 +12,7 @@ module.exports = {
         barCode: '@id',
       },
     ],
-    error: { errorcode: '0', errorinfo: 'error info' },
+    error: { errorcode: '6', errorinfo: 'error info' },
     errors: [{ errorcode: '1' }, { errorinfo: 'errors info' }],
   }
 };
