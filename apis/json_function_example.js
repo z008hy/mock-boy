@@ -1,5 +1,5 @@
 module.exports = (Mock) => ({
-  url: '/function_example',
+  url: '/json_function_example',
   method: 'get',
   data: {
     data: [
