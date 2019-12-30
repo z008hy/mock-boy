@@ -1,5 +1,5 @@
 const Koa = require('koa')
-const router = require('./server/router')
+const router = require('./server/route/index')
 const config = require('../.config')
 
 const app = new Koa()
