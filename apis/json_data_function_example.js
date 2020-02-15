@@ -1,7 +1,8 @@
 module.exports = {
   url: '/json_data_function_example',
   method: 'get',
-  data: () => {
+  data: (x) => {
+    console.log(x)
     const now = new Date()
     return {
       data: [
