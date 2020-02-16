@@ -8,7 +8,8 @@ const cwdRcPath = path.resolve(process.cwd(), './.mockconfig')
 const getRCConfig = () => {
   try {
     return ini.parse(fs.readFileSync(cwdRcPath, 'utf-8'))
-  } catch {
+  } catch(err) {
+    console.log(`"${cwdRcPath}" not found!`)
     return ini.parse(fs.readFileSync(rcPath, 'utf-8'))
   }
 }
