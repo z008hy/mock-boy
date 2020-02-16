@@ -1,6 +1,6 @@
 {
   "name": "mock-boy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a mock server for development",
   "bin": {
     "mock-boy": "bin/index.js"
